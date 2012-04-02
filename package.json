@@ -5,7 +5,7 @@
   "homepage": "https://github.com/huetsch/url-helper",
   "version": "0.0.3",
   "dependencies": {
-    "url-helper": "0.0.2"
+    "tag-helper": "0.0.2"
   },
   "main": "./url_helper.js",
   "author": "Mark Huetsch <markhuetsch@gmail.com>",
