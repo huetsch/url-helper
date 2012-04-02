@@ -1,0 +1,13 @@
+{
+  "name": "url-helper",
+  "description": "Rails' UrlHelper ported to Javascript",
+  "keywords": ["url", "url-helper"],
+  "homepage": "https://github.com/huetsch/url-helper",
+  "version": "0.0.3",
+  "dependencies": {
+    "url-helper": "0.0.2"
+  },
+  "main": "./url_helper.js",
+  "author": "Mark Huetsch <markhuetsch@gmail.com>",
+  "license": "MIT"
+}
