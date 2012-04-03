@@ -3,7 +3,7 @@
   "description": "Rails' UrlHelper ported to Javascript",
   "keywords": ["url", "url-helper"],
   "homepage": "https://github.com/huetsch/url-helper",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "dependencies": {
     "tag-helper": "0.0.2"
   },

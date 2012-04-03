@@ -1,14 +1,8 @@
 (function() {
-  var TagHelper, UrlHelper, root, url_helper,
+  var TagHelper, UrlHelper, url_helper,
     __slice = Array.prototype.slice;
 
-  root = typeof exports !== "undefined" && exports !== null ? exports : this;
-
-  if (typeof window !== "undefined" && window !== null) {
-    TagHelper = window.TagHelper;
-  } else {
-    TagHelper = require('tag-helper');
-  }
+  TagHelper = require('tag-helper');
 
   UrlHelper = (function() {
 
@@ -41,8 +35,8 @@
 
   url_helper = new UrlHelper();
 
-  root.link_to = url_helper.link_to;
+  exports.link_to = url_helper.link_to;
 
-  root.url_for = url_helper.url_for;
+  exports.url_for = url_helper.url_for;
 
 }).call(this);

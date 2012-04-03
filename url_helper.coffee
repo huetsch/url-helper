@@ -6,15 +6,10 @@
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-root = exports ? this
-
-if window?
-  TagHelper = window.TagHelper
-else
-  TagHelper = require 'tag-helper'
+TagHelper = require 'tag-helper'
 
 class UrlHelper
-  # XXX currently we only support backbone style models with an url method and strings
+  # TODO currently we only support backbone style models with an url method and strings
   url_for: (options) ->
     if typeof options is 'string'
       options
@@ -45,5 +40,5 @@ class UrlHelper
 
 url_helper = new UrlHelper()
 
-root.link_to = url_helper.link_to
-root.url_for = url_helper.url_for
+exports.link_to = url_helper.link_to
+exports.url_for = url_helper.url_for
