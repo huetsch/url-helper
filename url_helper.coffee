@@ -8,6 +8,84 @@
 
 TagHelper = require 'tag-helper'
 
+class PolymorphicRoutes
+  polymorphic_url: (record_or_hash_or_array, options = {}) =>
+    if record_or_hash_or_array instanceof Array
+      record_or_hash_or_array = record_or_hash_or_array.compact()
+
+    record_or_hash_or_array = record_or_hash_or_array[0] if record_or_hash_or_array.length is 1
+    record = @extract_record(record_or_hash_or_array)
+
+    args = if record_or_hash_or_array instanceof Array then Object.clone(record_or_hash_or_array) else [record_or_hash_or_array]
+
+    inflection = if options.action and String(options.action) is "new"
+      args.pop()
+      'singular'
+    #else if (record.respond_to?(:persisted?) && !record.persisted?)
+    else if not record.id
+      args.pop()
+      'plural'
+    else if record instanceof Backbone.Model
+      args.pop()
+      'plural'
+    else
+      'singular'
+
+    Object.delete_if args, (arg) ->
+      arg instanceof String or typeof arg is 'string'
+    
+    named_route = @build_named_route_call(record_or_hash_or_array, inflection, options)
+    url_options = Object.except(options, 'action', 'routing_type')
+    
+    unless Object.keys(url_options).length is 0
+      if Object.isPlainObject(args.last())
+        args.last().update(url_options)
+      else
+        args.push url_options
+        args
+
+    #(proxy || self).send(named_route, *args)
+
+  action_prefix: (options) =>
+    if options.action? then "#{options.action}_" else ''
+
+  routing_type: (options) =>
+    options.routing_type or 'url'
+
+  build_named_route_call: (records, inflection, options = {}) =>
+    if records instanceof Array
+      record = records.pop()
+      route = records.map (parent) =>
+        if parent instanceof String or typeof parent is 'string'
+          parent
+        else
+          Naming.singular_route_key parent
+    else
+      record = @extract_record records
+      route = []
+
+    if record instanceof String or typeof record is 'string'
+      route.push record
+    else if record
+      if inflection is 'singular'
+        route.push Naming.singular_route_key(record)
+      else
+        route.push Naming.route_key(record)
+    else
+      throw new ArgumentError("Nil location provided. Can't build URI.")
+
+    route.push @routing_type(options)
+
+    @action_prefix(options) + route.join("_")
+
+  extract_record: (record_or_hash_or_array) =>
+    if record_or_hash_or_array instanceof Array
+      record_or_hash_or_array.last()
+    else if Object.isPlainObject(record_or_hash_or_array)
+      record_or_hash_or_array.id
+    else
+      record_or_hash_or_array
+
 class UrlHelper
   # TODO currently we only support backbone style models with an url method and strings
   url_for: (options) ->
